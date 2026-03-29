@@ -2546,7 +2546,6 @@
       if(level === 1){
         return shuffle(['square','rectangle','triangle','circle']).map(shape => ({
           playMode:'shape-recognition',
-          prompt:`Bake a ${SHAPE_META[shape].label.toLowerCase()} cake.`,
           help:'Tap the matching cake shape.',
           customerText:`Please bake a ${SHAPE_META[shape].label.toLowerCase()} cake for me!`,
           options:shuffle(['square','rectangle','triangle','circle'].map(optionShape)),
