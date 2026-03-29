@@ -908,6 +908,20 @@
 
     .story-actions{display:flex;gap:8px;}
     .story-actions .game-btn{flex:1 1 0;min-width:0;}
+    .story-actions.single-action #forwardBtn{display:none !important;}
+    .story-actions.single-action #backBtn{flex:1 1 0;min-width:0;}
+
+    .order-card-inner{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      gap:4px;
+      transform-origin:top center;
+      will-change:transform;
+    }
+    .order-card-inner > *{flex:0 0 auto;}
 
     .feedback{
       min-height:40px;
@@ -1482,7 +1496,7 @@
   }
   .desktop-main{
     display:grid;
-    grid-template-columns:210px minmax(0,1fr) 210px;
+    grid-template-columns:230px minmax(0,1fr) 190px;
     gap:6px;
     flex:1 1 auto;
     min-height:0;
@@ -1520,6 +1534,43 @@
     flex:1 1 auto;
     min-height:0;
     overflow:hidden;
+  }
+  #frame1 .frame-body{
+    gap:4px;
+  }
+  #frame1 .character-frame{
+    flex:0 0 128px;
+    min-height:128px;
+  }
+  #frame1 .main-card{
+    flex:1 1 auto;
+    min-height:0;
+    overflow:hidden;
+    display:flex;
+    align-items:stretch;
+    justify-content:flex-start;
+    padding:8px 8px 6px;
+  }
+  #frame1 .dialogue{
+    font-size:12px;
+    line-height:1.12;
+    margin:0;
+  }
+  #frame1 .equation-big{
+    font-size:clamp(1.05rem,1.75vw,1.8rem);
+    line-height:1.06;
+    margin:4px 0;
+    white-space:normal;
+    word-break:break-word;
+  }
+  #frame1 .help-line{
+    font-size:10.5px;
+    line-height:1.08;
+    margin:0;
+  }
+  #frame3 .seller-frame{
+    flex:0 0 132px;
+    min-height:132px;
   }
   .main-card,.note,.speech,.answer-panel{
     border-radius:18px;
@@ -3070,10 +3121,13 @@
       backBtn.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
 
       if(currentStep === 1) forwardBtn.textContent = 'Go to Bake ➡';
-      else if(currentStep === 2) forwardBtn.textContent = questionResolved ? 'See Baker ➡' : 'Check First';
+      else if(currentStep === 2) forwardBtn.textContent = 'Use Check Button';
       else forwardBtn.textContent = questionResolved
         ? (currentQuestionIndex >= currentQuestions.length - 1 ? 'Finish Level ➡' : 'Next Order ➡')
         : 'Back to Order ➡';
+
+      updateStoryActionLayout();
+      requestAnimationFrame(fitOrderCard);
     }
 
     function updateChosenAnswer(){
@@ -3659,11 +3713,25 @@
       const hasAnyChoice = isMultiSelectQuestion()
         ? getSelectedKeys().length > 0
         : !!selectedAnswer;
-      checkBtn.disabled = !currentQuestion || questionResolved || !hasChoice;
+
+      if(questionResolved){
+        checkBtn.disabled = false;
+        checkBtn.textContent = '👩‍🍳 See Baker';
+        checkBtn.classList.remove('btn-check');
+        checkBtn.classList.add('btn-next');
+      }else{
+        checkBtn.disabled = !currentQuestion || !hasChoice;
+        checkBtn.textContent = '✔ Check';
+        checkBtn.classList.add('btn-check');
+        checkBtn.classList.remove('btn-next');
+      }
+
       clearBtn.disabled = !currentQuestion || questionResolved || !hasAnyChoice;
       hintBtn.disabled = !currentQuestion || questionResolved;
       nextBtn.disabled = !questionResolved;
-      nextBtn.style.display = questionResolved ? '' : 'none';
+      nextBtn.style.display = currentStep === 3 && questionResolved ? '' : 'none';
+      updateStoryActionLayout();
+      requestAnimationFrame(fitOrderCard);
     }
 
     function setSellerReady(){
@@ -3716,6 +3784,7 @@
       feedback.textContent = 'A new cake order is ready!';
       playAssetSound(audioOrderBell, fallbackOrderBell);
       speakCurrentQuestion();
+      requestAnimationFrame(fitOrderCard);
     }
 
     function checkAnswer(){
@@ -4005,7 +4074,13 @@
       loadQuestion();
     });
 
-    checkBtn.addEventListener('click', checkAnswer);
+    checkBtn.addEventListener('click', ()=>{
+      if(questionResolved){
+        setStep(3);
+        return;
+      }
+      checkAnswer();
+    });
     hintBtn.addEventListener('click', showHint);
     clearBtn.addEventListener('click', clearAnswer);
     nextBtn.addEventListener('click', nextOrder);
@@ -4063,6 +4138,14 @@
     });
        
 
+    window.addEventListener('resize', ()=>requestAnimationFrame(fitOrderCard));
+    window.addEventListener('orientationchange', ()=>requestAnimationFrame(fitOrderCard));
+    if(window.visualViewport){
+      window.visualViewport.addEventListener('resize', ()=>requestAnimationFrame(fitOrderCard));
+      window.visualViewport.addEventListener('scroll', ()=>requestAnimationFrame(fitOrderCard));
+    }
+
+    ensureOrderCardInner();
     setPlayerName(getPlayerName());
     bestScoreText.textContent = String(getBestScore());
     maxScoreText.textContent = String(totalMaxScore);
@@ -4071,6 +4154,7 @@
     setCustomerArt();
     setSellerReady();
     feedback.textContent = 'Welcome to Sweet Cake Shop!';
+    requestAnimationFrame(fitOrderCard);
   </script>
 </body>
 </html>
