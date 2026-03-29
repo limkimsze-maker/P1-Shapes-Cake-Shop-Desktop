@@ -2751,7 +2751,6 @@
         return [
           {
             playMode:'count-figure',
-            prompt:'How many quarter cakes can you find?',
             orderReminder:'Count the quarter cakes.',
             customerText:'The baker made a cake display. How many quarter cakes can you find?',
             options:countChoices,
@@ -2766,7 +2765,6 @@
           },
           {
             playMode:'count-figure',
-            prompt:'How many half cakes can you find?',
             orderReminder:'Count the half cakes.',
             customerText:'The baker arranged some cake parts on a tray. How many half cakes can you find?',
             options:countChoices,
@@ -2782,10 +2780,7 @@
           },
           {
             playMode:'count-figure',
-            prompt:'How many whole round cakes can you find?',
             orderReminder:'Count the whole round cakes.',
-            help:'Look at the cake figure. Count only the whole round cakes.',
-            countHelp:'Look carefully at the cake figure. Count only the whole round cakes.',
             customerText:'The baker stacked a little cake display. How many whole round cakes can you find?',
             options:countChoices,
             correct:'3',
@@ -2801,10 +2796,7 @@
           },
           {
             playMode:'count-figure',
-            prompt:'How many quarter cakes can you find?',
             orderReminder:'Count the quarter cakes.',
-            help:'Look at the cake figure. Count only the quarter cakes.',
-            countHelp:'Look carefully at the cake figure. Count only the quarter cakes.',
             customerText:'The baker used cake pieces to make a flower display. How many quarter cakes can you find?',
             options:countChoices,
             correct:'3',
@@ -2883,7 +2875,6 @@
         return [
           {
             playMode:'shape-recognition',
-            prompt:'Bonus Round 1: Bake a circle cake.',
             customerText:'Bonus round! First, please bake a circle cake for me!',
             options:shuffle(['square','rectangle','triangle','circle'].map(optionShape)),
             correct:'circle',
@@ -2892,7 +2883,6 @@
           },
           {
             playMode:'shape-recognition',
-            prompt:'Bonus Round 2: Which cake should the baker choose?',
             orderReminder:'4 equal sides • 4 corners • 4 vertices',
             customerText:'Bonus round! Please make me a cake with 4 equal sides, 4 corners, and 4 vertices.',
             options:shuffle(['square','rectangle','triangle','circle'].map(optionShape)),
