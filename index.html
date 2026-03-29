@@ -908,20 +908,6 @@
 
     .story-actions{display:flex;gap:8px;}
     .story-actions .game-btn{flex:1 1 0;min-width:0;}
-    .story-actions.single-action #forwardBtn{display:none !important;}
-    .story-actions.single-action #backBtn{flex:1 1 0;min-width:0;}
-
-    .order-card-inner{
-      width:100%;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:flex-start;
-      gap:4px;
-      transform-origin:top center;
-      will-change:transform;
-    }
-    .order-card-inner > *{flex:0 0 auto;}
 
     .feedback{
       min-height:40px;
@@ -1496,7 +1482,7 @@
   }
   .desktop-main{
     display:grid;
-    grid-template-columns:230px minmax(0,1fr) 190px;
+    grid-template-columns:210px minmax(0,1fr) 210px;
     gap:6px;
     flex:1 1 auto;
     min-height:0;
@@ -1534,43 +1520,6 @@
     flex:1 1 auto;
     min-height:0;
     overflow:hidden;
-  }
-  #frame1 .frame-body{
-    gap:4px;
-  }
-  #frame1 .character-frame{
-    flex:0 0 128px;
-    min-height:128px;
-  }
-  #frame1 .main-card{
-    flex:1 1 auto;
-    min-height:0;
-    overflow:hidden;
-    display:flex;
-    align-items:stretch;
-    justify-content:flex-start;
-    padding:8px 8px 6px;
-  }
-  #frame1 .dialogue{
-    font-size:12px;
-    line-height:1.12;
-    margin:0;
-  }
-  #frame1 .equation-big{
-    font-size:clamp(1.05rem,1.75vw,1.8rem);
-    line-height:1.06;
-    margin:4px 0;
-    white-space:normal;
-    word-break:break-word;
-  }
-  #frame1 .help-line{
-    font-size:10.5px;
-    line-height:1.08;
-    margin:0;
-  }
-  #frame3 .seller-frame{
-    flex:0 0 132px;
-    min-height:132px;
   }
   .main-card,.note,.speech,.answer-panel{
     border-radius:18px;
@@ -1732,7 +1681,6 @@
 }
 
 </style>
-  <script src="https://cdn.counter.dev/script.js" data-id="825e93b6-ce99-40ef-8bcc-125f13297433" data-utcoffset="8"></script>
 </head>
 <body>
   <div class="cover" id="coverScreen">
@@ -1746,13 +1694,13 @@
       <div class="cover-note">
         <strong>Learning goals</strong><br>
         Level 1 = basic shape recognition<br>
-        Level 2 = describing shapes<br>
-        Level 3 = grouping shapes<br>
-        Level 4 = recognising whole, half, and quarter<br>
-        Level 5 = composite figures<br>
-        Level 6 = bonus round <br>
+        Level 2 = listen to the customer describe a cake shape and choose the correct cake<br>
+        Level 3 = look at 2 cake trays and decide how the cakes are grouped<br>
+        Level 4 = count whole, half, and quarter cakes in cake figures<br>
+        Level 5 = find the 2 cake shapes that make the composite cake<br>
+        Level 6 = bonus round with 1 challenge from each level<br>
         Main score comes from Levels 1 to 5 only<br>
-        Get all in Level 6 to unlock the secret 5 tiered cake
+        Get all 5 correct in Level 6 to unlock the secret 5 tiered cake
       </div>
       <input id="coverNameInput" class="text-input" type="text" maxlength="20" placeholder="Type baker name">
       <div class="cover-actions">
@@ -3121,13 +3069,10 @@
       backBtn.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
 
       if(currentStep === 1) forwardBtn.textContent = 'Go to Bake ➡';
-      else if(currentStep === 2) forwardBtn.textContent = 'Use Check Button';
+      else if(currentStep === 2) forwardBtn.textContent = questionResolved ? 'See Baker ➡' : 'Check First';
       else forwardBtn.textContent = questionResolved
         ? (currentQuestionIndex >= currentQuestions.length - 1 ? 'Finish Level ➡' : 'Next Order ➡')
         : 'Back to Order ➡';
-
-      updateStoryActionLayout();
-      requestAnimationFrame(fitOrderCard);
     }
 
     function updateChosenAnswer(){
@@ -3713,25 +3658,11 @@
       const hasAnyChoice = isMultiSelectQuestion()
         ? getSelectedKeys().length > 0
         : !!selectedAnswer;
-
-      if(questionResolved){
-        checkBtn.disabled = false;
-        checkBtn.textContent = '👩‍🍳 See Baker';
-        checkBtn.classList.remove('btn-check');
-        checkBtn.classList.add('btn-next');
-      }else{
-        checkBtn.disabled = !currentQuestion || !hasChoice;
-        checkBtn.textContent = '✔ Check';
-        checkBtn.classList.add('btn-check');
-        checkBtn.classList.remove('btn-next');
-      }
-
+      checkBtn.disabled = !currentQuestion || questionResolved || !hasChoice;
       clearBtn.disabled = !currentQuestion || questionResolved || !hasAnyChoice;
       hintBtn.disabled = !currentQuestion || questionResolved;
       nextBtn.disabled = !questionResolved;
-      nextBtn.style.display = currentStep === 3 && questionResolved ? '' : 'none';
-      updateStoryActionLayout();
-      requestAnimationFrame(fitOrderCard);
+      nextBtn.style.display = questionResolved ? '' : 'none';
     }
 
     function setSellerReady(){
@@ -3784,7 +3715,6 @@
       feedback.textContent = 'A new cake order is ready!';
       playAssetSound(audioOrderBell, fallbackOrderBell);
       speakCurrentQuestion();
-      requestAnimationFrame(fitOrderCard);
     }
 
     function checkAnswer(){
@@ -4074,13 +4004,7 @@
       loadQuestion();
     });
 
-    checkBtn.addEventListener('click', ()=>{
-      if(questionResolved){
-        setStep(3);
-        return;
-      }
-      checkAnswer();
-    });
+    checkBtn.addEventListener('click', checkAnswer);
     hintBtn.addEventListener('click', showHint);
     clearBtn.addEventListener('click', clearAnswer);
     nextBtn.addEventListener('click', nextOrder);
@@ -4138,14 +4062,6 @@
     });
        
 
-    window.addEventListener('resize', ()=>requestAnimationFrame(fitOrderCard));
-    window.addEventListener('orientationchange', ()=>requestAnimationFrame(fitOrderCard));
-    if(window.visualViewport){
-      window.visualViewport.addEventListener('resize', ()=>requestAnimationFrame(fitOrderCard));
-      window.visualViewport.addEventListener('scroll', ()=>requestAnimationFrame(fitOrderCard));
-    }
-
-    ensureOrderCardInner();
     setPlayerName(getPlayerName());
     bestScoreText.textContent = String(getBestScore());
     maxScoreText.textContent = String(totalMaxScore);
@@ -4154,7 +4070,6 @@
     setCustomerArt();
     setSellerReady();
     feedback.textContent = 'Welcome to Sweet Cake Shop!';
-    requestAnimationFrame(fitOrderCard);
   </script>
 </body>
 </html>
