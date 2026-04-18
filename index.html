@@ -1882,6 +1882,52 @@
   }
 }
 
+
+/* ===== larger desktop modal windows patch ===== */
+@media (min-width: 900px){
+  .modal-card{
+    width:min(100%,980px) !important;
+    max-height:92vh;
+    padding:30px 28px !important;
+    border-radius:28px;
+  }
+  .modal-title{
+    font-size:48px !important;
+    margin-bottom:16px !important;
+    line-height:1.08;
+  }
+  .modal-badge{
+    font-size:32px !important;
+    padding:16px 28px !important;
+    margin:12px 0 20px !important;
+    border-width:4px;
+  }
+  .modal-line{
+    font-size:28px !important;
+    margin-bottom:16px !important;
+    line-height:1.3;
+  }
+  .report{
+    font-size:28px !important;
+    line-height:1.45 !important;
+    padding:22px 24px !important;
+    margin:0 auto 20px !important;
+    border-radius:24px;
+  }
+  .modal .game-btn{
+    font-size:28px !important;
+    padding:14px 24px !important;
+    min-width:220px !important;
+    border-width:4px;
+  }
+  .modal .text-input{
+    font-size:30px !important;
+    padding:18px 22px !important;
+    border-width:4px;
+    border-radius:18px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3031,6 +3077,7 @@
           selectionLimit:2,
           orderReminder:'Choose 2 shapes. Look at the red line.',
           help:'Tap 2 shape names, then press Check.',
+          customerText:'What 2 shapes can you see from this cake?',
           options:compositeShapeOptions(),
           correct:['square','triangle'],
           compositeId:'house',
@@ -3044,7 +3091,7 @@
           orderReminder:'Choose 2 shapes. Look at the red line.',
           help:'Tap 2 shape names, then press Check.',
           countHelp:'Look at the red line. It shows where the composite cake is split into 2 shapes.',
-          customerText:'The baker made a dome cake sign. Which 2 cake shapes can you see?',
+          customerText:'What 2 shapes can you see from this cake?',
           options:compositeShapeOptions(),
           correct:['half-circle','rectangle'],
           compositeId:'arch',
@@ -3056,7 +3103,7 @@
           multiSelect:true,
           selectionLimit:2,
           orderReminder:'Choose 2 shapes. Look at the red line.',
-          customerText:'The baker made a sail cake sign. Which 2 cake shapes can you see?',
+          customerText:'What 2 shapes can you see from this cake?',
           options:compositeShapeOptions(),
           correct:['triangle','quarter-circle'],
           compositeId:'sail',
@@ -3068,7 +3115,7 @@
           multiSelect:true,
           selectionLimit:2,
           orderReminder:'Choose 2 shapes. Look at the red line.',
-          customerText:'The baker made a tilted cake sign. Which 2 cake shapes can you see?',
+          customerText:'What 2 shapes can you see from this cake?',
           options:compositeShapeOptions(),
           correct:['rectangle','square'],
           compositeId:'tilted',
@@ -3145,7 +3192,7 @@
             multiSelect:true,
             selectionLimit:2,
             orderReminder:'Choose 2 shapes. Look at the red line.',
-            customerText:'Final bonus round! Which 2 cake shapes can you see in this composite cake?',
+            customerText:'What 2 shapes can you see from this cake?',
             options:compositeShapeOptions(),
             correct:['square','triangle'],
             compositeId:'house',
