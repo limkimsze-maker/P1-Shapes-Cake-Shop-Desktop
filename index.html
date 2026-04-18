@@ -1418,12 +1418,54 @@
 
 /* ===== desktop classroom layout patch ===== */
 @media (min-width: 900px){
-  .cover-card{
-    width:min(1180px,100%);
-    padding:20px;
-  }
   .cover{
-    padding:20px;
+    padding:8px;
+    align-items:stretch;
+    justify-content:stretch;
+  }
+  .cover-card{
+    width:min(100%, calc(100vw - 16px));
+    min-height:calc(var(--app-h) - 16px);
+    max-width:none;
+    margin:0;
+    padding:22px 28px;
+    border-radius:28px;
+    display:grid;
+    grid-template-rows:minmax(230px, auto) auto auto auto auto;
+    align-content:center;
+    gap:14px;
+  }
+  .cover-hero{
+    min-height:230px;
+    margin-bottom:0;
+  }
+  .hero-big{font-size:76px;}
+  .cover-title{
+    font-size:clamp(2.3rem,3.6vw,3.2rem);
+    margin:0;
+  }
+  .cover-sub{
+    margin:0;
+    font-size:clamp(1.1rem,1.45vw,1.45rem);
+  }
+  .cover-note{
+    font-size:18px;
+    line-height:1.45;
+    padding:16px 18px;
+  }
+  .text-input{
+    margin-top:0;
+    padding:16px 18px;
+    font-size:24px;
+    border-radius:16px;
+  }
+  .cover-actions{
+    margin-top:0;
+  }
+  .start-btn{
+    min-width:340px;
+    padding:14px 28px;
+    font-size:36px;
   }
   .app{
     position:fixed;
