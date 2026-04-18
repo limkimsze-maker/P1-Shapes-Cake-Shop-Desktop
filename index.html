@@ -1771,6 +1771,39 @@
   }
 }
 
+
+/* ===== remove left-frame instruction card and enlarge level-3 answer text ===== */
+#frame1 .main-card{
+  display:none !important;
+}
+
+#answerGrid .option-btn.text-only .label{
+  font-size:clamp(24px,2vw,34px) !important;
+  line-height:1.08 !important;
+  font-weight:900 !important;
+}
+#answerGrid .option-btn.text-only{
+  min-height:78px !important;
+  padding:10px 10px !important;
+}
+@media (max-width:900px){
+  #answerGrid .option-btn.text-only .label{
+    font-size:clamp(18px,4.8vw,26px) !important;
+  }
+  #answerGrid .option-btn.text-only{
+    min-height:64px !important;
+  }
+}
+@media (max-width:430px){
+  #answerGrid .option-btn.text-only .label{
+    font-size:18px !important;
+  }
+  #answerGrid .option-btn.text-only{
+    min-height:58px !important;
+    padding:8px 8px !important;
+  }
+}
+
 </style>
 </head>
 <body>
