@@ -502,8 +502,8 @@
       background:linear-gradient(180deg,#fffdf8,#fff5e9);
       border:3px solid #f1c8d6;
       border-radius:28px;
-      padding:10px 8px;
-      min-height:182px;
+      padding:14px 12px;
+      min-height:280px;
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       align-items:center;
@@ -518,8 +518,8 @@
       margin-bottom:2px;
     }
     .grouping-item{
-      width:74px;
-      height:74px;
+      width:148px;
+      height:148px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -527,8 +527,8 @@
       transform-origin:center;
     }
     .grouping-svg{
-      width:74px;
-      height:74px;
+      width:148px;
+      height:148px;
       overflow:visible;
       display:block;
     }
@@ -1015,9 +1015,9 @@
       .play-stage{padding:6px;border-width:2px;}
       .shape-card,.piece-card,.combo-card{padding:6px 4px;border-width:2px;border-radius:14px;}
       .grouping-trays{gap:8px;}
-      .grouping-tray{min-height:150px;padding:8px 6px;border-width:2px;border-radius:22px;}
-      .grouping-item{width:60px;height:60px;}
-      .grouping-svg{width:60px;height:60px;}
+      .grouping-tray{min-height:220px;padding:10px 8px;border-width:2px;border-radius:22px;}
+      .grouping-item{width:112px;height:112px;}
+      .grouping-svg{width:112px;height:112px;}
       .grouping-caption{font-size:9px;}
       .count-figure-board{width:min(100%,246px);height:188px;border-width:2px;border-radius:22px;}
       .count-figure-piece{width:72px;}
@@ -1079,9 +1079,9 @@
       .avatar-badge{font-size:8px;padding:2px 6px;}
       .play-stage{padding:5px;}
       .grouping-trays{gap:6px;}
-      .grouping-tray{min-height:134px;padding:6px 5px;border-radius:20px;}
-      .grouping-item{width:52px;height:52px;}
-      .grouping-svg{width:52px;height:52px;}
+      .grouping-tray{min-height:196px;padding:8px 6px;border-radius:20px;}
+      .grouping-item{width:98px;height:98px;}
+      .grouping-svg{width:98px;height:98px;}
       .grouping-caption{font-size:8px;line-height:1.1;}
       .answer-panel{grid-template-columns:62px 1fr;gap:4px;padding:3px;}
       .answer-bubble{width:50px;height:50px;font-size:11px;}
@@ -3457,9 +3457,9 @@
     }
 
     function groupingShapeSVG(item){
-      const fill = item.style === 'outline' ? '#fffdfb' : '#ffb3cf';
-      const stroke = '#ef7aa8';
-      const sizeScale = item.size === 'small' ? 0.62 : item.size === 'large' ? 1.08 : 0.84;
+      const fill = item.style === 'outline' ? '#ffffff' : '#1f4e79';
+      const stroke = '#1f4e79';
+      const sizeScale = item.size === 'small' ? 1.24 : item.size === 'large' ? 2.16 : 1.68;
       let shape = '';
       if(item.shape === 'circle'){
         shape = `<circle cx="50" cy="50" r="20" fill="${fill}" stroke="${stroke}" stroke-width="4"></circle>`;
