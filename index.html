@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover"
   />
   <title>Sweet Cake Shop</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -907,7 +907,7 @@
     .speech.bad{background:#ffe6e0;border-color:var(--bad);color:#8f1e15;}
 
     .story-actions{display:flex;gap:8px;}
-    .story-actions .game-btn{flex:1 1 0;min-width:0;}
+    .story-actions .game-btn{flex:1 1 0;min-width:0;font-size:26px;padding:12px 12px;line-height:1.1;}
 
     .feedback{
       min-height:40px;
@@ -922,6 +922,7 @@
     }
     .feedback.good{color:var(--good);}
     .feedback.bad{color:var(--bad);}
+    .zoom-tip{text-align:center;font-size:12px;font-weight:900;color:#8a4c2b;opacity:.9;line-height:1.2;}
     .footer{text-align:center;font-size:9px;font-weight:900;opacity:.8;padding-bottom:2px;}
 
     .modal{
@@ -1205,8 +1206,9 @@
   padding:6px 2px;
 }
 .story-actions .game-btn{
-  padding:6px 4px;
-  font-size:13px;
+  padding:10px 8px;
+  font-size:24px;
+  line-height:1.1;
 }
 
 @media (max-width:430px){
@@ -1253,8 +1255,9 @@
     padding:5px 2px;
   }
   .story-actions .game-btn{
-    font-size:12px;
-    padding:5px 3px;
+    font-size:18px;
+    padding:8px 6px;
+    line-height:1.1;
   }
 }
 
@@ -1313,8 +1316,9 @@
     padding:4px 1px;
   }
   .story-actions .game-btn{
-    font-size:11px;
-    padding:4px 2px;
+    font-size:16px;
+    padding:6px 4px;
+    line-height:1.1;
   }
 }
   
@@ -1635,8 +1639,10 @@
     flex:0 0 auto;
   }
   .story-actions .game-btn{
-    min-height:38px;
-    font-size:15px;
+    min-height:58px;
+    font-size:30px;
+    padding:12px 14px;
+    line-height:1.1;
   }
   .feedback{
     min-height:40px;
@@ -1677,6 +1683,91 @@
     transform:scale(var(--desktop-stage-scale));
     transform-origin:center center;
     pointer-events:auto;
+  }
+}
+
+
+/* ===== chatgpt repair patch: zoomable, wider desktop, persistent mirrored orders ===== */
+#frame1 #orderEquation,
+#frame2 #countEquation{
+  color:#c62828 !important;
+  font-weight:900 !important;
+  line-height:1.08 !important;
+  white-space:normal !important;
+  word-break:break-word;
+}
+#frame1 #orderEquation{
+  font-size:clamp(2rem,2.4vw,3.25rem) !important;
+}
+#frame2 #countEquation{
+  font-size:clamp(2rem,2.4vw,3.25rem) !important;
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+}
+#frame2 .equation-face-row{
+  display:block !important;
+}
+#frame2 #miniSellerWrap,
+#frame2 .dialogue,
+#frame2 #countHelp{
+  display:none !important;
+}
+#frame1 #orderHelp{
+  font-size:18px !important;
+}
+@media (max-width: 899px){
+  #frame1 #orderEquation,
+  #frame2 #countEquation{
+    font-size:clamp(1.45rem,6vw,2.1rem) !important;
+  }
+  #frame1 #orderHelp{
+    font-size:12px !important;
+  }
+}
+@media (min-width: 900px){
+  .desktop-scale-wrap{
+    display:block !important;
+    position:static !important;
+    inset:auto !important;
+    overflow:visible !important;
+    padding:0 !important;
+    pointer-events:auto !important;
+    z-index:auto !important;
+  }
+  .app{
+    position:fixed !important;
+    inset:10px !important;
+    width:auto !important;
+    height:auto !important;
+    max-width:none !important;
+    max-height:none !important;
+    margin:0 !important;
+    transform:none !important;
+    transform-origin:center center !important;
+  }
+}
+
+
+/* ===== bigger text for the small control buttons ===== */
+.answer-panel .controls .game-btn{
+  font-size:22px !important;
+  line-height:1.05;
+  letter-spacing:.01em;
+}
+@media (max-width:900px){
+  .answer-panel .controls .game-btn{
+    font-size:18px !important;
+  }
+}
+@media (max-width:430px){
+  .answer-panel .controls .game-btn{
+    font-size:14px !important;
+  }
+}
+@media (max-height:780px) and (pointer:coarse){
+  .answer-panel .controls .game-btn{
+    font-size:13px !important;
   }
 }
 
@@ -1826,6 +1917,7 @@
     </div>
 
     <div class="feedback" id="feedback">Welcome to Sweet Cake Shop!</div>
+    <div class="zoom-tip">Display tip: Press Ctrl + mouse scroll to zoom in or out.</div>
     <div class="footer">Designed by Lim Kim Sze © 2026</div>
   </div>
 
@@ -1919,10 +2011,6 @@
       window.visualViewport.addEventListener('resize', updateDesktopScale);
       window.visualViewport.addEventListener('scroll', updateDesktopScale);
     }
-
-    document.addEventListener('wheel', function(e){
-      if(e.ctrlKey) e.preventDefault();
-    }, { passive:false });
 
     ['gesturestart','gesturechange','gestureend'].forEach(type=>{
       document.addEventListener(type, function(e){ e.preventDefault(); }, { passive:false });
@@ -2074,23 +2162,7 @@
     }
 
     function updateDesktopScale(){
-      ensureDesktopScaleWrap();
-      if(!window.matchMedia('(min-width: 900px)').matches){
-        document.documentElement.style.setProperty('--desktop-stage-scale', '1');
-        return;
-      }
-      const vv = window.visualViewport;
-      const viewportWidth = vv ? vv.width : window.innerWidth;
-      const viewportHeight = vv ? vv.height : window.innerHeight;
-      const designWidth = 1366;
-      const designHeight = 860;
-      const padding = 16;
-      const scale = Math.min(
-        (viewportWidth - padding) / designWidth,
-        (viewportHeight - padding) / designHeight
-      );
-      const safeScale = Math.max(0.5, Math.min(scale, 1.75));
-      document.documentElement.style.setProperty('--desktop-stage-scale', String(safeScale));
+      document.documentElement.style.setProperty('--desktop-stage-scale', '1');
     }
 
     ensureDesktopScaleWrap();
@@ -2163,6 +2235,42 @@
     const introMission = document.getElementById('introMission');
     const introDetails = document.getElementById('introDetails');
     const startLevelBtn = document.getElementById('startLevelBtn');
+
+
+    function getPrimaryOrderText(){
+      const raw = (currentQuestion && (currentQuestion.prompt || currentQuestion.customerText || currentQuestion.orderReminder))
+        || orderEquation.textContent
+        || countEquation.textContent
+        || '';
+      return String(raw).replace(/\s+/g, ' ').trim();
+    }
+
+    function syncVisibleOrders(){
+      const text = getPrimaryOrderText();
+      if(text){
+        orderEquation.textContent = text;
+        countEquation.textContent = text;
+      }
+      orderEquation.style.color = '#c62828';
+      countEquation.style.color = '#c62828';
+      orderEquation.style.fontWeight = '900';
+      countEquation.style.fontWeight = '900';
+      orderEquation.style.lineHeight = '1.08';
+      countEquation.style.lineHeight = '1.08';
+      if(window.matchMedia('(min-width: 900px)').matches){
+        orderEquation.style.fontSize = '26px';
+        countEquation.style.fontSize = '26px';
+      }else{
+        orderEquation.style.fontSize = '20px';
+        countEquation.style.fontSize = '20px';
+      }
+      if(miniSellerWrap) miniSellerWrap.style.display = 'none';
+      if(countHelp) countHelp.style.display = 'none';
+      const card = countEquation.closest('.main-card');
+      const dialogueEl = card ? card.querySelector('.dialogue') : null;
+      if(dialogueEl) dialogueEl.style.display = 'none';
+    }
+
 
     const roundModal = document.getElementById('roundModal');
     const roundTitle = document.getElementById('roundTitle');
@@ -3647,11 +3755,13 @@
       stageState = 'idle';
       setCustomerArt();
 
-      customerLine.textContent = currentQuestion.customerText;
-      orderEquation.textContent = currentQuestion.prompt;
-      orderHelp.textContent = currentQuestion.help;
-      countEquation.textContent = currentQuestion.orderReminder || currentQuestion.prompt;
+      const primaryOrderText = currentQuestion.prompt || currentQuestion.customerText || currentQuestion.orderReminder || '';
+      customerLine.textContent = 'A new cake order is ready.';
+      orderEquation.textContent = primaryOrderText;
+      orderHelp.textContent = currentQuestion.help || 'Tap the matching cake shape.';
+      countEquation.textContent = primaryOrderText;
       countHelp.textContent = currentQuestion.countHelp || (currentQuestion.orderReminder ? 'Use the clues above to choose the correct cake.' : 'Tap an answer, then press Check.');
+      syncVisibleOrders();
 
       updateChosenAnswer();
       renderPlayStage();
@@ -3887,6 +3997,7 @@
       setSellerReady();
       setStep(1);
       showModal(introModal);
+      syncVisibleOrders();
     }
 
     function startGame(){
@@ -3953,6 +4064,10 @@
       stopAllAudio();
       hideModal(introModal);
       loadQuestion();
+      syncVisibleOrders();
+      setTimeout(syncVisibleOrders, 0);
+      setTimeout(syncVisibleOrders, 120);
+      setTimeout(syncVisibleOrders, 400);
     });
 
     checkBtn.addEventListener('click', checkAnswer);
@@ -4021,6 +4136,11 @@
     setCustomerArt();
     setSellerReady();
     feedback.textContent = 'Welcome to Sweet Cake Shop!';
+
+
+    window.addEventListener('resize', syncVisibleOrders);
+    setInterval(syncVisibleOrders, 300);
+
   </script>
 </body>
 </html>
